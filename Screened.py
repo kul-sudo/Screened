@@ -18,9 +18,7 @@ def screenshot_function():
 	for _ in range(10):
 		name += choice(digits)
 	explorer = filesavebox(default = f'{name}.{screenshot_format}')
-	if explorer == None:
-		pass
-	else:
+	if explorer != None:
 		path = f'{explorer}.{screenshot_format}'
 		if os.path.exists(path):
 			try:
@@ -33,15 +31,20 @@ def screenshot_function():
 		except:
 			messagebox.showerror(title='Error', message='An error occurred')
 
+x = pyautogui.size()[0]
+y = pyautogui.size()[1]
 window = Tk()
 window['bg'] = '#3f3f3f'
 window.title('Screened')
-window.geometry('300x90')
+if x == 1920 and y == 1080:
+	window.geometry('300x90')
+elif x == 1680 and y == 1050:
+	window.geometry('300x120')
 window.resizable(width=False, height=False)
 screen = Button(window, text='Screenshot', height=2, width=10, command=screenshot_function)
 screen.place(x=105, y=50)
 choose_format = Combobox(window)
-choose_format['values'] = ('png', 'jpg', 'jpeg')
+choose_format['values'] = ('png', 'jpg', 'jpeg', 'webp')
 choose_format.current(0)
 choose_format.pack()
 window.mainloop()
