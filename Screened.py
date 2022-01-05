@@ -1,5 +1,5 @@
 import pyautogui
-import os
+from os import path, remove
 from tkinter import Tk, Button, messagebox
 from tkinter.ttk import Combobox
 from easygui import filesavebox
@@ -19,10 +19,10 @@ def screenshot_function():
 		name += choice(digits)
 	explorer = filesavebox(default = f'{name}.{screenshot_format}')
 	if explorer != None:
-		path = f'{explorer}.{screenshot_format}'
-		if os.path.exists(path):
+		screenshot_path = f'{explorer}.{screenshot_format}'
+		if path.exists(screenshot_path):
 			try:
-				os.remove(path)
+				remove(screenshot_path)
 			except:
 				messagebox.showerror(title='Error', message='An error occurred')
 				return
@@ -37,9 +37,11 @@ window = Tk()
 window['bg'] = '#3f3f3f'
 window.title('Screened')
 if x == 1920 and y == 1080:
-	window.geometry('300x90')
+	window.geometry('300x100')
 elif x == 1680 and y == 1050:
 	window.geometry('300x120')
+else:
+	window.geometry('300x100')
 window.resizable(width=False, height=False)
 screen = Button(window, text='Screenshot', height=2, width=10, command=screenshot_function)
 screen.place(x=105, y=50)
