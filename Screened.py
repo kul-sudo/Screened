@@ -1,4 +1,5 @@
-import pyautogui
+from pyautogui import size
+from pyscreeze import screenshot
 from os import path, remove
 from tkinter import Tk, Button, messagebox
 from tkinter.ttk import Combobox
@@ -8,10 +9,14 @@ from random import choice
 
 def screenshot_function():
 	screenshot_format = choose_format.get()
+	screenshot_now = False
 	window.withdraw()
-	screenshot = None
-	screenshot = pyautogui.screenshot()
-	while screenshot == None:
+	screenshot_now = True
+	while screenshot_now is False:
+		pass
+	screenshot_take = None
+	screenshot_take = screenshot()
+	while screenshot_take == None:
 		pass
 	window.deiconify()
 	name = ''
@@ -27,12 +32,12 @@ def screenshot_function():
 				messagebox.showerror(title='Error', message='An error occurred')
 				return
 		try:
-			screenshot.save(f'{explorer}.{screenshot_format}')
+			screenshot_take.save(f'{explorer}.{screenshot_format}')
 		except:
 			messagebox.showerror(title='Error', message='An error occurred')
 
-x = pyautogui.size()[0]
-y = pyautogui.size()[1]
+x = size()[0]
+y = size()[1]
 window = Tk()
 window['bg'] = '#3f3f3f'
 window.title('Screened')
