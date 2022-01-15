@@ -9,9 +9,8 @@ from random import choice
 
 def screenshot_function():
 	screenshot_format = choose_format.get()
-	screenshot_now = None
-	screenshot_now = window.withdraw()
-	while screenshot_now == None:
+	window.withdraw()
+	while window.wm_state() != 'withdrawn':
 		pass
 	screenshot_take = None
 	screenshot_take = screenshot()
