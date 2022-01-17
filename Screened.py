@@ -40,11 +40,11 @@ window = Tk()
 window['bg'] = '#3f3f3f'
 window.title('Screened')
 if x == 1920 and y == 1080:
-	window.geometry('300x100')
+	window.geometry('310x100')
 elif x == 1680 and y == 1050:
-	window.geometry('300x120')
+	window.geometry('310x120')
 else:
-	window.geometry('300x100')
+	window.geometry('310x100')
 window.resizable(width=False, height=False)
 screen = Button(window, text='Screenshot', height=2, width=10, command=screenshot_function)
 screen.place(x=105, y=50)
@@ -52,5 +52,5 @@ window.iconphoto(False, PhotoImage(data='iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAAB
 choose_format = Combobox(window)
 choose_format['values'] = ('png', 'jpg', 'jpeg', 'webp')
 choose_format.current(0)
-choose_format.pack()
+choose_format.place(x=73, y=5)
 window.mainloop()
