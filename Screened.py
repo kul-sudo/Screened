@@ -52,5 +52,5 @@ window.iconphoto(False, PhotoImage(data='iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAAB
 choose_format = Combobox(window)
 choose_format['values'] = ('png', 'jpg', 'jpeg', 'webp')
 choose_format.current(0)
-choose_format.place(x=73, y=5)
+choose_format.place(x=74, y=5)
 window.mainloop()
