@@ -1,4 +1,5 @@
-![Capture](https://user-images.githubusercontent.com/95244851/149829927-d0888f42-93f4-433b-95b4-36c1238f43e0.PNG)
+![Capture](https://user-images.githubusercontent.com/95244851/149912537-2f23a230-b53f-4006-ad2a-ec0985afc20d.PNG)
+![Capture1](https://user-images.githubusercontent.com/95244851/149912543-de3788d8-bb97-4974-8d34-01d8f00d962e.PNG)
 # Screened
 Screened is an app for taking screenshots really quickly and easily.
 
