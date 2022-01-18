@@ -2,9 +2,9 @@
 # Screened
 Screened is an app for taking screenshots really quickly and easily.
 
-[Click me to download Screened](https://github.com/k-ulyanov/Screened/releases)
+[Download Screened here](https://github.com/k-ulyanov/Screened/releases)
 
-[Click me to see the source code of Screened](https://github.com/k-ulyanov/Screened/blob/main/Screened.py)
+[Source code here](https://github.com/k-ulyanov/Screened/blob/main/Screened.py)
 
 After downloading Screened you can save the executable file wherever you want.
 
