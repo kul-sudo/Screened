@@ -1,7 +1,7 @@
 [![Screened-Top-github](https://user-images.githubusercontent.com/95244851/150595137-591fb626-a94b-44d7-941c-b2090b2acbd9.png)](https://github.com/k-ulyanov/Screened/releases)
 
 # About
-Screened is an app for taking screenshots really quickly and easily.
+Screened is an app for capturing your screen really quickly and easily.
 
 
 ![screened_w11](https://user-images.githubusercontent.com/95244851/149918598-b0c63c74-33da-4bc0-992b-e5dcfc313ce0.PNG)
