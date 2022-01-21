@@ -1,4 +1,4 @@
-[![Screened-Top-github](https://user-images.githubusercontent.com/95244851/150594436-aceda059-112f-408d-943e-83010a7c4fbd.png)](https://github.com/k-ulyanov/Screened/releases)
+![Screened-Top-github](https://user-images.githubusercontent.com/95244851/150595082-97c4aa8d-f68d-45e1-930d-b39e4ea607fe.png)(https://github.com/k-ulyanov/Screened/releases)
 
 # About
 Screened is an app for taking screenshots really quickly and easily.
