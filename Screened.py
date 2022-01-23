@@ -1,4 +1,3 @@
-from pyautogui import size
 from pyscreeze import screenshot
 from os import path, remove
 from tkinter import Tk, Button, messagebox, PhotoImage
@@ -6,11 +5,23 @@ from tkinter.ttk import Combobox
 from easygui import filesavebox
 from string import digits
 from random import choice
+from pygetwindow import getAllTitles
+from win32api import GetSystemMetrics
+
+window_name = 'Screened'
+u = ['\u00A0', '\u2000', '\u3000', '\u2009', '\u205F', '\u200A', '\u2008']
+for _ in range(4):
+	window_name += choice(u)
+
+def window_on():
+	global titles
+	titles = getAllTitles()
+	return window_name in titles
 
 def screenshot_function():
 	screenshot_format = choose_format.get()
 	window.withdraw()
-	while window.wm_state() != 'withdrawn':
+	while window_on():
 		pass
 	screenshot_take = None
 	screenshot_take = screenshot()
@@ -34,15 +45,15 @@ def screenshot_function():
 		except:
 			messagebox.showerror(title='Error', message='An error occurred')
 
-x = size()[0]
-y = size()[1]
+x = str(GetSystemMetrics(0))
+y = str(GetSystemMetrics(1))
 window = Tk()
 window['bg'] = '#3f3f3f'
-window.title('Screened')
-if x == 1920 and y == 1080:
+window.title(window_name)
+if x == '1920' and y == '1080':
 	window.geometry('310x100')
-elif x == 1680 and y == 1050:
-	window.geometry('310x120')
+elif x == '1680' and y == '1050':
+	window.geometry('310x110')
 else:
 	window.geometry('310x100')
 window.resizable(width=False, height=False)
