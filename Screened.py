@@ -9,7 +9,7 @@ from pygetwindow import getAllTitles
 from win32api import GetSystemMetrics
 
 window_name = 'Screened'
-u = ['\u00A0', '\u2000', '\u3000', '\u2009', '\u205F', '\u200A', '\u2008']
+u = '\u00A0', '\u2000', '\u3000', '\u2009', '\u205F', '\u200A', '\u2008'
 for _ in range(4):
 	window_name += choice(u)
 
