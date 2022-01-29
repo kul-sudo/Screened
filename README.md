@@ -18,9 +18,9 @@ After downloading Screened you can save the executable file wherever you want.
 
 Run the executable, choose your screenshot format and click `Screenshot`. Then a file explorer will be opened; there you have to choose where you want to save your screenshot!
 
-Tick the `Hotkeys` checkbox if you want to turn on hotkeys.\
+Tick the `Shortcuts` checkbox if you want to turn on shortcuts.\
 *Ctrl + Alt - take a screenshot\
 Win + Alt - hide the window\
 Win + Ctrl - show the window*
 
-*You can also see the hotkeys by clicking the question mark to the right of the `Hotkeys` button.*
+*You can also see the shortcuts by clicking the question mark to the right of the `Shortcuts` button.*
