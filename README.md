@@ -20,7 +20,7 @@ Run the executable, choose your screenshot format and click `Screenshot`. Then a
 
 Tick the `Hotkeys` checkbox if you want to turn on hotkeys.\
 *Ctrl + Alt - take a screenshot\
-Win + Alt - hide a screenshot\
-Win + Ctrl - show a screenshot*
+Win + Alt - hide the window\
+Win + Ctrl - show the window*
 
 *You can also see the hotkeys by clicking the question mark to the right of the `Hotkeys` button.*
