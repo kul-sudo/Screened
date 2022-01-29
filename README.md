@@ -1,4 +1,4 @@
-[![Screened-Top-github](https://user-images.githubusercontent.com/95244851/150595137-591fb626-a94b-44d7-941c-b2090b2acbd9.png)](https://github.com/k-ulyanov/Screened/releases)
+![Screened-Top](https://user-images.githubusercontent.com/95244851/151676812-3988aba4-a536-42a2-b9db-d84384137526.png)
 
 # About
 Screened is an app for capturing your screen really quickly and easily.
@@ -17,3 +17,10 @@ Screened is an app for capturing your screen really quickly and easily.
 After downloading Screened you can save the executable file wherever you want.
 
 Run the executable, choose your screenshot format and click `Screenshot`. Then a file explorer will be opened; there you have to choose where you want to save your screenshot!
+
+Tick the `Hotkeys` checkbox if you want to turn on hotkeys.\
+*Ctrl + Alt - take a screenshot\
+Win + Alt - hide a screenshot\
+Win + Ctrl - show a screenshot*
+
+*You can also see the hotkeys by clicking the question mark to the right of the `Hotkeys` button.*
