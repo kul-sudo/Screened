@@ -1,18 +1,11 @@
 from pyscreeze import screenshot
 from os import path, remove
-<<<<<<< HEAD
 from tkinter import BOTTOM, LEFT, RIGHT, TOP, Tk, Frame, BooleanVar, Button, Checkbutton, Label, PhotoImage
 from tkinter.messagebox import askokcancel, showerror, showinfo, WARNING
-=======
-from tkinter import Tk, Button, messagebox, PhotoImage
->>>>>>> parent of a91f150 (Screened)
 from tkinter.ttk import Combobox
 from easygui import filesavebox
-from string import digits
-from random import choice
-from pygetwindow import getAllTitles
+from pygetwindow import getAllWindows
 from win32api import GetSystemMetrics
-<<<<<<< HEAD
 from datetime import datetime
 from time import sleep
 from keyboard import add_hotkey, unhook_all_hotkeys
@@ -24,56 +17,43 @@ def window_on(hwnd):
 	for i in all_hwnd:
 		hwnd_list.append(int(i[i.rfind('=')+1:i.rfind(')')]))
 	return hwnd in hwnd_list
-=======
 
-window_name = 'Screened'
-u = '\u00A0', '\u2000', '\u3000', '\u2009', '\u205F', '\u200A', '\u2008'
-for _ in range(4):
-	window_name += choice(u)
-
-def window_on():
-	global titles
-	titles = getAllTitles()
-	return window_name in titles
->>>>>>> parent of a91f150 (Screened)
-
+# Function for taking the screenshot (called by the 'Screenshot' button)
 def screenshot_function():
-<<<<<<< HEAD
 	# Hiding the window & waiting for it to really hide
 	window_isvisible = window_on(window_hwnd)
-=======
-	screenshot_format = choose_format.get()
->>>>>>> parent of a91f150 (Screened)
 	window.withdraw()
 	while window_on(window_hwnd):
 		pass
-<<<<<<< HEAD
 	if idnw_on.get():
 		sleep(1) # Goofy fix
 	# Taking the screenshot & waiting for it to really be taken
-=======
->>>>>>> parent of a91f150 (Screened)
 	screenshot_take = None
 	screenshot_take = screenshot()
 	while screenshot_take == None:
 		pass
-	window.deiconify()
-	name = ''
-	for _ in range(10):
-		name += choice(digits)
-	explorer = filesavebox(default = f'{name}.{screenshot_format}')
+	# Determining the screenshot name
+	name = str(datetime.now()).replace(':', '-').replace('.', '-')
+	save(screenshot_take, name, choose_format.get()) # 3rd argument - getting the screenshot format
+	# Restoring the window
+	if window_isvisible:
+		window.deiconify()
+
+def save(screenshot_take, name, format):
+	# Requesting the save path & saving
+	explorer = filesavebox(default = f'Screenshot {name}.{format}')
 	if explorer != None:
-		screenshot_path = f'{explorer}.{screenshot_format}'
+		screenshot_path = f'{explorer}.{format}'
 		if path.exists(screenshot_path):
-			try:
-				remove(screenshot_path)
-			except:
-				messagebox.showerror(title='Error', message='An error occurred')
-				return
+			if askokcancel(title='File already exists', message='Do you want to replace this file?', icon=WARNING):
+				try:
+					remove(screenshot_path)
+				except:
+					showerror(title='Error', message='Could not replace the file')
+					return
 		try:
-			screenshot_take.save(f'{explorer}.{screenshot_format}')
+			screenshot_take.save(f'{explorer}')
 		except:
-<<<<<<< HEAD
 			showerror(title='Error', message='Could not save')
 
 # Screenshot maintenance
@@ -107,27 +87,11 @@ window['bg'] = BG_COLOR
 window.title('Screened')
 if GetSystemMetrics(0) == 1680 and GetSystemMetrics(1) == 1050:
 	window.geometry('340x120')
-=======
-			messagebox.showerror(title='Error', message='An error occurred')
-
-x = str(GetSystemMetrics(0))
-y = str(GetSystemMetrics(1))
-window = Tk()
-window['bg'] = '#3f3f3f'
-window.title(window_name)
-if x == '1920' and y == '1080':
-	window.geometry('310x100')
-elif x == '1680' and y == '1050':
-	window.geometry('310x110')
->>>>>>> parent of a91f150 (Screened)
 else:
 	window.geometry('325x100')
 window.geometry('300x100')
 window.resizable(width=False, height=False)
-screen = Button(window, text='Screenshot', height=2, width=10, command=screenshot_function)
-screen.place(x=105, y=50)
 window.iconphoto(False, PhotoImage(data='iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAAAXNSR0IArs4c6QAAGzVJREFUeF7tnQnUlsP7xyeypahQlC0JKdGi7C1KyVpCdYqkUrIm+5pdSIgsRZSlEFJUllRCSlqPEi2oONlLRPifz/z+r1+/Tm89z/s+z9wz93yvczrE/dwz873m/s7MNddSomHDhv8YiRAQAlEiUEIEEKXeNWghYBEQAWgiCIGIERABRKx8DV0IiAA0B4RAxAiIACJWvoYuBEQAmgNCIGIERAARK19DFwIiAM0BIRAxAiKAiJWvoQsBEYDmgBCIGAERQMTK19CFgAhAc0AIRIyACCBi5WvoQkAEoDkgBCJGQAQQsfI1dCEgAtAcEAIRIyACiFj5GroQEAFoDgiBiBEQAUSsfA1dCIgANAeEQMQIiAAiVr6GLgREAJoDQiBiBEQAEStfQxcCIgDNASEQMQIigIiVr6ELARGA5oAQiBgBEUDEytfQhYAIQHNACESMgAggYuVr6EJABKA5IAQiRkAEELHyNXQhIALQHBACESMgAohY+Rq6EBABaA4IgYgREAFErHwNXQiIADQHhEDECIgAIla+hi4ERACaA0IgYgREABErX0MXAiIAzQEhEDECIoCIla+hCwERgOaAEIgYARFAxMrX0IWACEBzQAhEjIAIIGLla+hCQASgOSAEIkZABBCx8jV0ISAC0BwQAhEjIAKIWPkauhAQAWgOCIGIERABRKx8DV0IiAA0B4RAxAiIACJWvoYuBEQAmgNCIGIERAARK19DFwIiAM0BIRAxAiKAiJWvoQsBEYDmgBCIGAERQMTK19CFgAhAc0AIRIyACCBi5WvoQkAEoDkgBCJGQAQQsfI1dCEgAtAcEAIRIyACiFj5GroQEAFoDgiBiBEQAUSsfA1dCIgANAeEQMQIiAAiVr6GLgREAJoDQiBiBEQAEStfQxcCURPATjvtZHbbbTfzxRdfmN9++02zQQhEh0DUBNC3b19z6KGHmnXr1pm33nrLPP/882bp0qXRTQINOF4EoiWAww47zNxyyy1mq622+lf7EMHXX39tnn32WTNlyhTz66+/xjszNPIoEIiSALbZZhvz5JNPmkqVKm1UyX///beZNWuWGTdunHn33XfN77//HsVk0CDjQyBKAjjhhBPM5ZdfnpG2v/zySzNq1CjzxhtvaEeQEWJ6KCQEoiOAHXfc0dx5552mevXqWenp559/NmPGjDETJ040CxYsyOq3elgI+IpAdARw5plnmh49ehRZHz/++KM1GEIGy5YtM3/++WeR3xXzD7fbbjtTunRpU7FiRcORbIsttrBwVKlSxf6dY9j68s8//5hvv/3WrF692qxdu9be2vz000/27/z7hs/HjG02Y4+KALbffnvz2GOPmcqVK2eD0UafXbNmjfnwww/t0WDmzJkiggwQLVOmjKlatao58MADrQ72339/+/cSJUpk8Ov/PgIZ8MEvX77czJ8/36xcudJMnz7dfPbZZ5YQJJkjEBUBtGrVylx44YX/rjaZw1T4k0zGRYsWmeHDh5upU6cajgqS/yKw3377mSOOOMLUrl3bfvDbbrtt3uBhNzZhwgQzadIkM23aNLtTkGwagWgIYOutt7Yfably5fIyJ/766y/zyy+/WBvBiBEj7OoUo4AzvhXHHnus2XPPPU2FChXMDjvs4BSKP/74w3BUw6dj9OjR9kZHxLxxFURDAM2aNTPXXnutk4nIx//222+b8ePHW78CdgkxyN57723atm1rmjdvnvW2Pl/4cFSYN2+eefXVV61OYtFFpnhGQQClSpUyDzzwgNl3330zxSUnzzHZJk+ebIYNG2bPp2kV3Knbt29vWrZsabbccktvh8lOYODAgdZuIPkPAlEQQJs2bcwFF1yQmM4hgrlz51oD5Jw5cxLrRy4bxnBXrVo1g13lyCOPdL7NL+pYOKZhuIWUV61aVdTXpOZ3qSeAsmXLmnvuucf56r/hDGErOmDAADNy5MjgJ0/58uXNqaeeak466aS82VTyCRKEvHDhQnPfffdZn46YrxBTTwBJr/4FE5k77GuuucZGHoYsXN/17t3bWvVDF4gAf47Bgwdbo2GMkmoC4Dz60ksvGXYBSQvb/+eeey5oI1S9evXMVVddZXbeeeek4cxp+5Dy7bffHjw5FwWUVBMA1uirr766KLjk9DdLliwxl156adCrTOvWra0H5frRkzkFKeGX4dh18803W+eumCS1BFCyZEnz6KOPWk+zpIXYg7FjxybdjSK3j4W/S5cuOXWgKnJn8vhDwr9vvfVW88EHH+SxFb9enVoCYNv/yiuvJI42qz8fD7kGQhOcpnr27GmaNm0aWteL3F8Mgr169bLu3TFIagmguEE/uVA+eQRY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'))
-<<<<<<< HEAD
 
 top_frame = Frame(master=window, bg=BG_COLOR)
 top_frame.pack(side=TOP, pady=4)
@@ -177,10 +141,4 @@ add_shortcuts()
 unhook_all_hotkeys()
 
 # Run the window
-=======
-choose_format = Combobox(window)
-choose_format['values'] = ('png', 'jpg', 'jpeg', 'webp')
-choose_format.current(0)
-choose_format.place(x=74, y=5)
->>>>>>> parent of a91f150 (Screened)
 window.mainloop()
