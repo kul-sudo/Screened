@@ -165,9 +165,9 @@ unhook_all_hotkeys()
 # Run the window
 window.mainloop()
 
-# top_frame - 115 line
-# shortcuts_frame - 124 line
-# bottom_frame - 138 line
+# top_frame - 110 line
+# shortcuts_frame - 119 line
+# bottom_frame - 133 line
 
 # top_frame (master is 'window') ->
 	# choose_format (combobox), shortcuts_frame (frame)
