@@ -23,7 +23,10 @@ def window_on(hwnd):
 def screenshot_function():
 	# Hiding the window & waiting for it to really hide
 	window_isvisible = window_on(window_hwnd)
-	window.withdraw()
+	withdrawer = None
+	withdrawer = window.withdraw()
+	while withdrawer is None:
+		pass
 	while window_on(window_hwnd):
 		pass
 	if idnw_on.get():
@@ -32,22 +35,17 @@ def screenshot_function():
 	if current_window_on.get() is False:
 		screenshot_take = None
 		screenshot_take = ImageGrab.grab()
+		while screenshot_take is None:
+			pass
 	else:
 		screenshot_take = None
-		part = list(GetWindowRect(FindWindow(None, getActiveWindowTitle())))
-		if part[2] >= 1226 and part[3] >= 646 and part[0] <= -8 and part[1] <= -8:
-			part[3] = part[3] - 8
-			part[2] = part[2] - 8
-			part[1] = part[1] + 8
-			part[0] = part[0] + 8
-		part = tuple(part)
-		screenshot_take = ImageGrab.grab(bbox=part)
+		screenshot_take = ImageGrab.grab(bbox=tuple(list(GetWindowRect(FindWindow(None, getActiveWindowTitle())))))
+		while screenshot_take is None:
+			pass
 		# bbox - area to be taken from the screen and its size further
-	while screenshot_take == None:
-		pass
 	# Determining the screenshot name
 	name = str(datetime.now()).replace(':', '-').replace('.', '-')
-	save(screenshot_take, name, choose_format.get()) # 3rd argument - getting the screenshot format
+	save(screenshot_take=screenshot_take, name=name, format=choose_format.get()) # 3rd argument - getting the screenshot format
 	# Restoring the window
 	if window_isvisible:
 		window.deiconify()
@@ -55,7 +53,7 @@ def screenshot_function():
 def save(screenshot_take, name, format):
 	# Requesting the save path & saving
 	explorer = filesavebox(default=f'Screenshot {name}.{format}')
-	if explorer != None:
+	if explorer is not None:
 		screenshot_path = f'{explorer}.{format}'
 		if path.exists(screenshot_path):
 			if askokcancel(title='File already exists', message='Do you want to replace this file?', icon=WARNING):
@@ -65,7 +63,8 @@ def save(screenshot_take, name, format):
 					showerror(title='Error', message='Could not replace the file')
 					return
 		try:
-			screenshot_take.save(f'{explorer}')
+			print(explorer)
+			screenshot_take.save(explorer)
 		except:
 			showerror(title='Error', message='Could not save')
 
