@@ -4,11 +4,11 @@ from tkinter.ttk import Combobox
 from win32api import GetSystemMetrics
 from keyboard import add_hotkey, unhook_all_hotkeys
 from screenshot import screenshot_function
-from json import load
+from json import loads
+from settings import json_settings
 import common
 
-with open('settings.json', 'r') as json_settings:
-	data = load(json_settings)
+data = loads(json_settings)
 
 data_window = data['window'][0] # All the data related to the window
 data_shortcuts = data['shortcuts'][0] # All the data related to shortcuts
