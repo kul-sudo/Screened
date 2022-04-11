@@ -1,75 +1,17 @@
-from PIL import ImageGrab
-from os import path, remove
 from tkinter import BOTTOM, LEFT, RIGHT, TOP, Tk, Frame, BooleanVar, Button, Checkbutton, Label, PhotoImage
-from tkinter.messagebox import askokcancel, showerror, showinfo, WARNING
+from tkinter.messagebox import showinfo
 from tkinter.ttk import Combobox
-from easygui import filesavebox
-from pygetwindow import getAllWindows, getActiveWindowTitle
 from win32api import GetSystemMetrics
-from win32gui import GetWindowRect, FindWindow
-from datetime import datetime
-from time import sleep
 from keyboard import add_hotkey, unhook_all_hotkeys
-from icondata import icondata
+from screenshot import screenshot_function
+from json import load
+import common
 
-# Check if the window is hidden
-def window_on(hwnd):
-	all_hwnd = f'{getAllWindows()}'.split()
-	hwnd_list = []
-	for i in all_hwnd:
-		hwnd_list.append(int(i[i.rfind('=')+1:i.rfind(')')]))
-	return hwnd in hwnd_list
+with open('settings.json', 'r') as json_settings:
+	data = load(json_settings)
 
-# Function for taking the screenshot (called by the 'Screenshot' button)
-def screenshot_function():
-	# Hiding the window & waiting for it to really hide
-	window_isvisible = window_on(hwnd=window_hwnd)
-	withdrawer = None
-	withdrawer = window.withdraw()
-	while withdrawer is None:
-		pass
-	while window_on(hwnd=window_hwnd):
-		pass
-	if idnw_on.get():
-		sleep(1) # Goofy fix
-	# Taking the screenshot & waiting for it to really be taken
-	if current_window_on.get() is False:
-		screenshot_take = None
-		screenshot_take = ImageGrab.grab()
-		while screenshot_take is None:
-			pass
-	else:
-		screenshot_take = None
-		screenshot_take = ImageGrab.grab(bbox=tuple(list(GetWindowRect(FindWindow(None, getActiveWindowTitle())))))
-		while screenshot_take is None:
-			pass
-		# bbox - area to be taken from the screen and its size further
-	# Determining the screenshot name
-	name = str(datetime.now()).replace(':', '-').replace('.', '-')
-	save(screenshot_take=screenshot_take, name=name, format=choose_format.get()) # 3rd argument - getting the screenshot format
-	# Restoring the window
-	if window_isvisible:
-		window.deiconify()
-
-def save(screenshot_take, name, format):
-	# Requesting the save path & saving
-	# explorer = filesavebox(default=f'Screenshot {name}.{format}')
-	explorer = filesavebox(default=f'Screenshot {name}')
-	if explorer is not None:
-		explorer = f'{explorer}.{format}'
-		if path.exists(explorer):
-			if askokcancel(title='File already exists', message='Do you want to replace this file?', icon=WARNING):
-				try:
-					remove(explorer)
-				except:
-					showerror(title='Error', message='Could not replace the file')
-					return
-		while path.exists(explorer):
-			pass
-		try:
-			screenshot_take.save(explorer)
-		except:
-			showerror(title='Error', message='Could not save')
+data_window = data['window'][0] # All the data related to the window
+data_shortcuts = data['shortcuts'][0] # All the data related to shortcuts
 
 # Screenshot maintenance
 def take_screenshot():
@@ -82,40 +24,46 @@ def take_screenshot():
 			add_shortcuts()
 		screenshot_taking = False
 
+def window_deiconfiying():
+	if common.window.state() == 'withdrawn':
+		common.window.deiconify()
+
 # Adding shortcuts
 def add_shortcuts():
-	add_hotkey('ctrl+alt', take_screenshot)
-	add_hotkey('win+alt', window.withdraw)
-	add_hotkey('win+ctrl', window.deiconify)
+	add_hotkey(data_shortcuts['take-screenshot'], take_screenshot) # Determining the shortcut for taking screenshots 
+	add_hotkey(data_shortcuts['window-withdraw'], common.window.withdraw) # Determining the shortcut for hiding the window
+	add_hotkey(data_shortcuts['window-deiconify'], window_deiconfiying) # Determining the shortcut for show the window
 
-# Shortcuts toggle
+# Handling shortcuts toggling
 def shortcuts_toggle():
-	if shortcuts_on.get():
+	if shortcuts_on.get(): # Check if the shortcuts checkbox is checked
 		add_shortcuts()
-	else:
+	else: # Unhooking all of the shortcuts if the shortcuts checkbox is not checked
 		unhook_all_hotkeys()
 
-
 # Window creation & set window settings depending on the screen resolution
-BG_COLOR = '#3f3f3f'
-window = Tk()
-window['bg'] = BG_COLOR
-window.title('Screened')
-if GetSystemMetrics(0) == 1680 and GetSystemMetrics(1) == 1050:
-	window.geometry('420x120')
+common.window = Tk()
+
+BG_COLOR = data_window['bg-color']
+
+common.window['bg'] = BG_COLOR # Window background
+common.window.title(data_window['app-name']) # Window name
+
+if GetSystemMetrics(0) == 1680 and GetSystemMetrics(1) == 1050: # Checking if the X of the window equals 1680 and Y equals 1050
+	common.window.geometry(data_window['1680x1050-size'])
 else:
-	window.geometry('420x100')
-window.resizable(width=False, height=False)
-window.iconphoto(False, PhotoImage(data=icondata))
+	common.window.geometry(data_window['not-1680x1050-size'])
+common.window.resizable(width=False, height=False) # Disabling the window resizability
+common.window.iconphoto(False, PhotoImage(data=data_window['app-icon']))
 
 # Top frame ('choose format' combobox and 'shortcuts' frame)
-top_frame = Frame(master=window, bg=BG_COLOR)
+top_frame = Frame(master=common.window, bg=BG_COLOR)
 top_frame.pack(side=TOP, pady=4)
 
 # Creating the format selection 'Combobox'
-choose_format = Combobox(master=top_frame, values=('png', 'jpg', 'jpeg', 'webp'), width=6)
-choose_format.pack(side=LEFT, padx=15)
-choose_format.current(0)
+common.choose_format = Combobox(master=top_frame, values=data_window['screenshot-formats'], width=6)
+common.choose_format.pack(side=LEFT, padx=15)
+common.choose_format.current(0)
 
 # Shortcuts_frame frame to be mastered my 'top_frame' (shortcuts_label, shortcuts)
 shortcuts_frame = Frame(master=top_frame, bg=BG_COLOR)
@@ -132,12 +80,12 @@ shortcut = Checkbutton(master=shortcuts_frame, text='shortcuts', variable=shortc
 shortcut.pack(side=RIGHT)
 
 # Bottom frame (for everthing else)
-bottom_frame = Frame(master=window, bg=BG_COLOR)
+bottom_frame = Frame(master=common.window, bg=BG_COLOR)
 bottom_frame.pack(side=BOTTOM, pady=10)
 
 # Current window screenshot feature
-current_window_on = BooleanVar()
-current_window = Checkbutton(master=bottom_frame, text='current window', variable=current_window_on)
+common.current_window_on = BooleanVar()
+current_window = Checkbutton(master=bottom_frame, text='current window', variable=common.current_window_on)
 current_window.pack(side=LEFT, padx=5)
 
 # Creating the 'Screenshot' button
@@ -150,12 +98,12 @@ current_window_label.pack(side=RIGHT, padx=1, pady=3)
 current_window_label.bind('<Button-1>', lambda y: showinfo(title='Current Window', message='Click on the window you want to screenshot'))
 
 # If-does-not-work checkbox
-idnw_on = BooleanVar()
-idnw = Checkbutton(master=bottom_frame, text='window hiding fix', variable=idnw_on)
+common.idnw_on = BooleanVar()
+idnw = Checkbutton(master=bottom_frame, text='window hiding fix', variable=common.idnw_on)
 idnw.pack(side=RIGHT, padx=5)
 
 # Get the window HWND
-window_hwnd = int(window.frame(), 16)
+common.window_hwnd = int(common.window.frame(), 16)
 
 # Allow screenshot taking (saying that screenshot taking is not in progress)
 screenshot_taking = False
@@ -164,12 +112,8 @@ screenshot_taking = False
 add_shortcuts()
 unhook_all_hotkeys()
 
-# Run the window
-window.mainloop()
-
-# top_frame - 108 line
-# shortcuts_frame - 117 line
-# bottom_frame - 131 line
+# Running the window
+common.window.mainloop()
 
 # top_frame (master is 'window') ->
 	# choose_format (combobox), shortcuts_frame (frame)
@@ -178,4 +122,4 @@ window.mainloop()
 
 # bottom_frame (master is 'window') ->
 	# screen (screenshot button), current_window_label (the tip of the feature to screenshot a certain window),
-	# current_window (feature to screenshot a certain window), idnw (If-does-not-work checkbox, delay fix)
+	# current_window (feature to screenshot a certain window), idnw (If-does-not-work checkbox, then do a delay fix)
