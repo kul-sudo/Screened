@@ -9,7 +9,7 @@ Screened is an app for capturing your screen really quickly and easily.
 
 After downloading Screened, you can save the executable file wherever you want.
 
-Run the executable, choose your screenshot format and click `Screenshot`. Then a file explorer will be opened; there you have to choose where you want to save your screenshot!
+Run the executable, choose your screenshot format and click `Screenshot`. Then a file explorer will be opened; there you have to choose where you want to save your screenshot.
 
 Click `current window` if you want to screenshot only the active window.
 
